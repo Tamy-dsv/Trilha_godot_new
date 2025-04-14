@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqm38kayx462i"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x7q4j"]
+radius = 30.104
+
+[node name="RigidBody2D" type="RigidBody2D"]
+position = Vector2(542, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(11.5, 11)
+shape = SubResource("CircleShape2D_x7q4j")
+
+[node name="ColorRect" type="ColorRect" parent="CollisionShape2D"]
+offset_left = -20.5
+offset_top = -20.0
+offset_right = 19.5
+offset_bottom = 20.0
+color = Color(1, 1, 0, 1)

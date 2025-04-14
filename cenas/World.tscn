@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dtewcv14k44hq"]
+
+[ext_resource type="Script" uid="uid://bkhsf6jge7h3i" path="res://node.gd" id="1_2dftf"]
+[ext_resource type="PackedScene" uid="uid://cqm38kayx462i" path="res://objects/caixa.tscn" id="2_bcbcq"]
+[ext_resource type="PackedScene" uid="uid://be4mkn2dg7iaj" path="res://objects/caixa2.tscn" id="3_js7pq"]
+[ext_resource type="PackedScene" uid="uid://dm3kfk2hi7yl8" path="res://objects/caixa1.tscn" id="4_js7pq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c6gwx"]
+size = Vector2(1152, 88)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_2dftf"]
+a = Vector2(259, 140)
+b = Vector2(117, -17)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_bcbcq"]
+a = Vector2(114, -41)
+b = Vector2(-23, 115)
+
+[node name="Mundo" type="Node2D"]
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("1_2dftf")
+object_templates = Array[PackedScene]([ExtResource("4_js7pq"), ExtResource("3_js7pq"), ExtResource("2_bcbcq")])
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 647.0
+color = Color(0.708957, 0.626595, 0.995728, 1)
+
+[node name="RigidBody2D" parent="ColorRect" instance=ExtResource("2_bcbcq")]
+position = Vector2(593, 18)
+
+[node name="RigidBody2D2" parent="ColorRect" instance=ExtResource("3_js7pq")]
+position = Vector2(499, 17)
+
+[node name="RigidBody2D3" parent="ColorRect" instance=ExtResource("4_js7pq")]
+position = Vector2(550, 75)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(576, 604)
+shape = SubResource("RectangleShape2D_c6gwx")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D/CollisionShape2D"]
+offset_left = -576.0
+offset_top = -44.0
+offset_right = 576.0
+offset_bottom = 44.0
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(442, 420)
+shape = SubResource("SegmentShape2D_2dftf")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(51, 33)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(396, 411)
+shape = SubResource("SegmentShape2D_bcbcq")
+debug_color = Color(0, 0.6, 0.701961, 1)

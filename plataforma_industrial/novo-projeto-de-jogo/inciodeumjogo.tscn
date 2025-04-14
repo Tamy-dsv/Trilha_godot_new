@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmrxroes0vww7"]
+
+[ext_resource type="Texture2D" uid="uid://cdh38spb8kdc2" path="res://kenney_platformer-pack-industrial/PNG/Retina/platformIndustrial_108.png" id="1_ojrmk"]
+[ext_resource type="Texture2D" uid="uid://d0nhonio10wp1" path="res://kenney_alien-ufo-pack/PNG/shipPink_manned.png" id="2_d0gml"]
+[ext_resource type="Texture2D" uid="uid://c46wxh6blvx3j" path="res://kenney_platformer-pack-industrial/PNG/Retina/platformIndustrial_012.png" id="3_4cuv7"]
+[ext_resource type="Texture2D" uid="uid://bpq1v2lr02et7" path="res://kenney_platformer-pack-industrial/PNG/Retina/platformIndustrial_013.png" id="4_d46sp"]
+[ext_resource type="Texture2D" uid="uid://wba5sgscf0u3" path="res://kenney_platformer-pack-industrial/PNG/Retina/platformIndustrial_104.png" id="5_3tw6l"]
+
+[node name="PlatformIndustrial108" type="Sprite2D"]
+position = Vector2(575.5, 323.5)
+scale = Vector2(8.20714, 4.62143)
+texture = ExtResource("1_ojrmk")
+
+[node name="ShipPinkManned" type="Sprite2D" parent="."]
+position = Vector2(-15.1673, -58.1655)
+scale = Vector2(0.0589187, 0.113499)
+texture = ExtResource("2_d0gml")
+
+[node name="PlatformIndustrial012" type="Sprite2D" parent="."]
+position = Vector2(-0.304612, -0.324577)
+texture = ExtResource("3_4cuv7")
+
+[node name="PlatformIndustrial013" type="Sprite2D" parent="."]
+position = Vector2(-47.215, 43.3849)
+texture = ExtResource("4_d46sp")
+
+[node name="PlatformIndustrial104" type="Sprite2D" parent="."]
+position = Vector2(-61.1053, -29.7527)
+scale = Vector2(0.0733247, 0.15881)
+texture = ExtResource("5_3tw6l")
+
+[node name="PlatformIndustrial104" type="Sprite2D" parent="PlatformIndustrial104"]
+position = Vector2(229.317, 102.19)
+scale = Vector2(0.985163, 0.973213)
+texture = ExtResource("5_3tw6l")
+
+[node name="PlatformIndustrial104" type="Sprite2D" parent="PlatformIndustrial104/PlatformIndustrial104"]
+position = Vector2(241.205, -123.203)
+scale = Vector2(0.985163, 0.973213)
+texture = ExtResource("5_3tw6l")
+
+[node name="PlatformIndustrial104" type="Sprite2D" parent="PlatformIndustrial104/PlatformIndustrial104/PlatformIndustrial104"]
+position = Vector2(232.852, 152.488)
+scale = Vector2(0.985163, 0.973213)
+texture = ExtResource("5_3tw6l")
+
+[node name="PlatformIndustrial104" type="Sprite2D" parent="PlatformIndustrial104/PlatformIndustrial104/PlatformIndustrial104/PlatformIndustrial104"]
+position = Vector2(307.615, -119.731)
+scale = Vector2(0.985163, 0.973213)
+texture = ExtResource("5_3tw6l")
