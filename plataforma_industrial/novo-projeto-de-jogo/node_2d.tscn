@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dt0q5c6x112lt"]
+[gd_scene load_steps=8 format=3 uid="uid://dt0q5c6x112lt"]
 
 [ext_resource type="Texture2D" uid="uid://b57ne3ar2epo2" path="res://kenney_platformer-pack-industrial/Tilesheet/platformerPack_industrial_tilesheet.png" id="1_0e48y"]
 [ext_resource type="Texture2D" uid="uid://d0nhonio10wp1" path="res://kenney_alien-ufo-pack/PNG/shipPink_manned.png" id="2_epypp"]
+[ext_resource type="Script" uid="uid://ciagcac2pywcf" path="res://scripts/alien.gd" id="3_epypp"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
 friction = 0.07
@@ -1692,13 +1693,15 @@ sources/0 = SubResource("TileSetAtlasSource_0hol4")
 radius = 50.0
 
 [node name="Node2D" type="Node2D"]
-position = Vector2(9, -30)
+position = Vector2(13, 32)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(70, 67)
 tile_set = SubResource("TileSet_q6r6c")
 format = 2
+layer_0/name = "cenario"
 layer_0/tile_data = PackedInt32Array(524288, 131072, 0, 524289, 131072, 0, 524290, 131072, 0, 524291, 131072, 0, 524294, 131072, 0, 524295, 131072, 0, 524296, 131072, 0, 524297, 131072, 0, 589824, 131072, 0, 589825, 131072, 0, 589826, 131072, 0, 589827, 131072, 0, 589830, 131072, 0, 589831, 131072, 0, 589832, 131072, 0, 589833, 131072, 0, 196617, 393216, 0, 262152, 393216, 0, 327688, 327680, 1, 327687, 393216, 0, 393224, 327680, 1, 393223, 327680, 1, 65547, 393216, 0, 12, 393216, 0, 13, 327680, 1, 14, 327680, 1, 65549, 327680, 1, 65548, 327680, 1, 131083, 327680, 1, 196619, 327680, 1, 262155, 327680, 1, 327691, 327680, 1, 393227, 327680, 1, 458763, 327680, 1, 393228, 327680, 1, 327692, 327680, 1, 262157, 327680, 1, 196621, 327680, 1, 131085, 327680, 1, 131084, 327680, 1, 196620, 327680, 1, 262156, 327680, 1, 262154, 327680, 1, 196618, 327680, 1, 131082, 393216, 0, 327690, 327680, 1, 327689, 327680, 1, 393225, 327680, 1, 262153, 327680, 1, 393222, 393216, 0, 458759, 327680, 1, 458760, 327680, 1, 458761, 327680, 1, 458762, 327680, 1, 393226, 327680, 1, 327693, 327680, 1, 196622, 327680, 1, 131086, 327680, 1, 65550, 327680, 1, 327694, 327680, 1, 393230, 327680, 1, 262158, 327680, 1, 393229, 327680, 1, 458764, 327680, 1, 458765, 327680, 1, 458766, 327680, 1, 458758, 327680, 1, 458757, 393216, 0, 524298, 196608, 0, 524299, 196608, 0, 524300, 196608, 0, 524301, 196608, 0, 524302, 196608, 0, 589838, 196608, 0, 589837, 196608, 0, 589836, 196608, 0, 589835, 196608, 0, 589834, 196608, 0, 524292, 262144, 1, 524293, 262144, 1, 589828, 262144, 1, 589829, 262144, 1, 131073, 327680, 3, 327681, 655360, 2, -131077, 65536, 4, -131076, 65536, 4, -131075, 65536, 4, -131074, 65536, 4, -131073, 65536, 4, -196608, 65536, 4, -196607, 65536, 4, -196606, 65536, 4, -196605, 65536, 4, -196604, 65536, 4, -196603, 65536, 4, -196602, 65536, 4, -196601, 65536, 4, -196600, 65536, 4, -196599, 65536, 4, -262135, 65536, 4, -262134, 65536, 4, -262133, 65536, 4, -262132, 65536, 4, -262131, 65536, 4, -196594, 65536, 4, -196595, 65536, 4, -196596, 65536, 4, -196597, 65536, 4, -196598, 65536, 4, -262136, 65536, 4, -262137, 65536, 4, -262138, 65536, 4, -262139, 65536, 4, -262140, 65536, 4, -262141, 65536, 4, -262142, 65536, 4, -262143, 65536, 4, -262144, 65536, 4, -196609, 65536, 4, -196610, 65536, 4, -196611, 65536, 4, -196612, 65536, 4, -196613, 65536, 4, -262130, 65536, 4)
+layer_1/name = "ajustes"
 
 [node name="RigidBody2D" type="RigidBody2D" parent="TileMap"]
 
@@ -1711,15 +1714,19 @@ position = Vector2(-3, -6)
 scale = Vector2(0.653226, 0.625984)
 texture = ExtResource("2_epypp")
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="TileMap"]
-position = Vector2(399, -39)
+[node name="CharacterBody2D" type="CharacterBody2D" parent="TileMap"]
+position = Vector2(-2, -9)
+script = ExtResource("3_epypp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/RigidBody2D2"]
-position = Vector2(103, 94)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/CharacterBody2D"]
+position = Vector2(502, 55)
 shape = SubResource("CircleShape2D_kdubu")
 
-[node name="ShipPinkManned" type="Sprite2D" parent="TileMap/RigidBody2D2/CollisionShape2D"]
+[node name="ShipPinkManned" type="Sprite2D" parent="TileMap/CharacterBody2D/CollisionShape2D"]
 position = Vector2(-4.00001, -5)
 scale = Vector2(0.544355, 0.55315)
 skew = 0.0296706
 texture = ExtResource("2_epypp")
+
+[node name="Camera2D" type="Camera2D" parent="TileMap/CharacterBody2D"]
+position = Vector2(495, 321)
