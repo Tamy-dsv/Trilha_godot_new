@@ -1,14 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://dt0q5c6x112lt"]
+[gd_scene load_steps=9 format=3 uid="uid://dt0q5c6x112lt"]
 
-[ext_resource type="Texture2D" uid="uid://b57ne3ar2epo2" path="res://kenney_platformer-pack-industrial/Tilesheet/platformerPack_industrial_tilesheet.png" id="1_0e48y"]
-[ext_resource type="Texture2D" uid="uid://d0nhonio10wp1" path="res://kenney_alien-ufo-pack/PNG/shipPink_manned.png" id="2_epypp"]
+[ext_resource type="Texture2D" uid="uid://63yldghn5amu" path="res://assets/PNG/game_background_1/layers/rocks_2.png" id="2_0e48y"]
 [ext_resource type="Script" uid="uid://ciagcac2pywcf" path="res://scripts/alien.gd" id="3_epypp"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e48y"]
 friction = 0.07
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_epypp"]
+load_path = "res://.godot/imported/platformerPack_industrial_tilesheet.png-0fb2cc83bee22b61e86c3c1e9b09e468.ctex"
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0hol4"]
-texture = ExtResource("1_0e48y")
+texture = SubResource("CompressedTexture2D_epypp")
 texture_region_size = Vector2i(70, 70)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-35, -35, 35, -35, 35, 35, -35, 35)
@@ -1692,6 +1694,9 @@ sources/0 = SubResource("TileSetAtlasSource_0hol4")
 [sub_resource type="CircleShape2D" id="CircleShape2D_kdubu"]
 radius = 50.0
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0hol4"]
+load_path = "res://.godot/imported/shipPink_manned.png-dca6ee40e92d8b5cc777632b3f0c5e67.ctex"
+
 [node name="Node2D" type="Node2D"]
 position = Vector2(13, 32)
 
@@ -1714,7 +1719,7 @@ shape = SubResource("CircleShape2D_kdubu")
 [node name="ShipPinkManned" type="Sprite2D" parent="TileMap/RigidBody2D/CollisionShape2D"]
 position = Vector2(-3, -6)
 scale = Vector2(0.653226, 0.625984)
-texture = ExtResource("2_epypp")
+texture = SubResource("CompressedTexture2D_0hol4")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="TileMap"]
 position = Vector2(-2, -9)
@@ -1728,7 +1733,24 @@ shape = SubResource("CircleShape2D_kdubu")
 position = Vector2(-4.00001, -5)
 scale = Vector2(0.544355, 0.55315)
 skew = 0.0296706
-texture = ExtResource("2_epypp")
+texture = SubResource("CompressedTexture2D_0hol4")
 
 [node name="Camera2D" type="Camera2D" parent="TileMap/CharacterBody2D"]
 position = Vector2(495, 321)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scale = Vector2(0.6, 0.6)
+transform = Transform2D(0.6, 0, 0, 0.6, 0, 0)
+
+[node name="sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0, 0)
+
+[node name="sprite" type="Sprite2D" parent="ParallaxBackground/sky"]
+position = Vector2(1, 1)
+scale = Vector2(0.986979, 1.22839)
+texture = ExtResource("2_0e48y")
+centered = false
+
+[node name="rock2" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="sprite" type="Sprite2D" parent="ParallaxBackground"]
