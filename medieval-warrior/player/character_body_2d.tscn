@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://56hvo4kn26ud"]
+
+[ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fui21"]
+radius = 63.0
+height = 200.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+
+[node name="WarriorPurple" type="Sprite2D" parent="."]
+position = Vector2(532.5, 325.25)
+scale = Vector2(3.78646, 3.0599)
+texture = ExtResource("1_liy72")
+hframes = 6
+vframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(528, 327)
+scale = Vector2(1, 1)
+shape = SubResource("CapsuleShape2D_fui21")
