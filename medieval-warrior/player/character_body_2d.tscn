@@ -1,28 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://56hvo4kn26ud"]
+[gd_scene load_steps=8 format=3 uid="uid://56hvo4kn26ud"]
 
+[ext_resource type="Script" uid="uid://ldgxq7ttiene" path="res://player/character_body_2d.gd" id="1_fui21"]
 [ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fui21"]
 radius = 63.0
 height = 200.0
-
-[sub_resource type="Animation" id="Animation_liy72"]
-resource_name = "parado"
-length = 6.0
-loop_mode = 1
-step = 1.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("sprite:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2, 3, 4, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_fui21"]
 length = 0.001
@@ -38,25 +21,75 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_liy72"]
+resource_name = "parado"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ylu1k"]
+resource_name = "correr"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ylu1k"]
 _data = {
 &"RESET": SubResource("Animation_fui21"),
+&"correr": SubResource("Animation_ylu1k"),
 &"parado": SubResource("Animation_liy72")
 }
 
 [node name="player" type="CharacterBody2D"]
+script = ExtResource("1_fui21")
 
 [node name="sprite" type="Sprite2D" parent="."]
-position = Vector2(532.5, 325.25)
+position = Vector2(530, 316)
 scale = Vector2(3.78646, 3.0599)
 texture = ExtResource("1_liy72")
 hframes = 6
 vframes = 8
+frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(528, 327)
-scale = Vector2(1, 1)
+position = Vector2(525, 319)
 shape = SubResource("CapsuleShape2D_fui21")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
