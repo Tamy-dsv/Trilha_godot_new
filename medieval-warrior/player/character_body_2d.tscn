@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://56hvo4kn26ud"]
+[gd_scene load_steps=9 format=3 uid="uid://56hvo4kn26ud"]
 
 [ext_resource type="Script" uid="uid://ldgxq7ttiene" path="res://player/character_body_2d.gd" id="1_fui21"]
 [ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
@@ -70,9 +70,28 @@ tracks/0/keys = {
 "values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_ydsn6"]
+resource_name = "ataque_cima-baixo"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 16, 17]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ylu1k"]
 _data = {
 &"RESET": SubResource("Animation_fui21"),
+&"ataque_cima-baixo": SubResource("Animation_ydsn6"),
 &"correr": SubResource("Animation_ylu1k"),
 &"parado": SubResource("Animation_liy72")
 }
