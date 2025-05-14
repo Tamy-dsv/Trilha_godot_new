@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://chk5hjh847dd"]
+[gd_scene load_steps=3 format=3 uid="uid://chk5hjh847dd"]
 
 [ext_resource type="PackedScene" uid="uid://56hvo4kn26ud" path="res://player/character_body_2d.tscn" id="1_wtcfe"]
+[ext_resource type="PackedScene" uid="uid://crr7lvjcvelph" path="res://inimigos/peoes.tscn" id="2_0e48y"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_wtcfe")]
 position = Vector2(28, -52)
+
+[node name="Peoes" parent="." instance=ExtResource("2_0e48y")]
+position = Vector2(216, 227)
+
+[node name="Peoes2" parent="." instance=ExtResource("2_0e48y")]
+position = Vector2(803, 355)
+
+[node name="Peoes3" parent="." instance=ExtResource("2_0e48y")]
+position = Vector2(537, 415)

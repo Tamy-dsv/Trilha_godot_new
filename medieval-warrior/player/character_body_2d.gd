@@ -12,6 +12,7 @@ var is_attacking: bool = false
 var attack_cooldown: float = 0.0
 
 func _process(delta: float)-> void:
+	GameManeger.player_position = position
 	# ler input 
 	read_input()
 	
