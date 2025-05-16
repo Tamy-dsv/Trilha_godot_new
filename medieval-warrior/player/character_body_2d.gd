@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var speed: float = 3
+@export var suword_damage: int = 2
 
 @onready var sprite: Sprite2D = $sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -13,6 +14,7 @@ var attack_cooldown: float = 0.0
 
 func _process(delta: float)-> void:
 	GameManeger.player_position = position
+	
 	# ler input 
 	read_input()
 	
@@ -74,9 +76,9 @@ func play_run_idle_animation() -> void:
 	if not is_attacking:
 		if was_running != is_running:
 			if is_running:
-				animation_player.play("correr")
+				animation_player.play("run")
 			else:
-				animation_player.play("parado")		
+				animation_player.play("idle")		
 			
 func rotate_sprite() -> void:
 		# Girar o sprite 	
@@ -98,6 +100,14 @@ func attack() -> void:
 	attack_cooldown = 0.6
 	
 	#marcar ataque
-	is_attacking = true	
-			
+	is_attacking = true
+	deal_damage_to_enemies()
+	
+	
+func deal_damage_to_enemies() -> void:
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		enemy.damage(suword_damage)
+	#pass
+		
 			
