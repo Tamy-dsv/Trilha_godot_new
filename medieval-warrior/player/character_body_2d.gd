@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 @onready var sprite: Sprite2D = $sprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready  var  sword_area: Area2D =  $SwordArea
  
 var input_vector: Vector2 = Vector2(0,0)
 var is_running: bool = false 
@@ -25,7 +26,8 @@ func _process(delta: float)-> void:
 			
 	#processar animação e rotação do sprite
 	play_run_idle_animation()
-	rotate_sprite()	
+	if not is_attacking:
+		rotate_sprite()	
 		
 func _physics_process(delta: float) -> void:
 
@@ -101,13 +103,30 @@ func attack() -> void:
 	
 	#marcar ataque
 	is_attacking = true
-	deal_damage_to_enemies()
+	
 	
 	
 func deal_damage_to_enemies() -> void:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		enemy.damage(suword_damage)
+	var bodies = sword_area.get_overlapping_bodies()
+	for body in bodies:
+		if  body.is_in_group("Inimigos"):
+			var enemy: Inimigos =body
+			var directio_to_enemy = (enemy.position - position).normalized()
+			var attack_direction: Vector2
+			if sprite.flip_h:
+				attack_direction = Vector2.LEFT
+			else:
+				attack_direction = Vector2.RIGHT
+			var dot_product = directio_to_enemy.dot(attack_direction)
+			if dot_product >= 0.3:
+				enemy.damage(suword_damage)
+		
+	
+	
+	
+	#var enemies = get_tree().get_nodes_in_group("enemies")
+	#for enemy in enemies:
+	#enemy.damage(suword_damage)
 	#pass
 		
 			
