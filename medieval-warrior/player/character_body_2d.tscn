@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fui21"]
-radius = 63.0
-height = 200.0
+radius = 37.0
+height = 116.0
 
 [sub_resource type="Animation" id="Animation_fui21"]
 length = 0.001
@@ -271,21 +271,21 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fui21"]
-radius = 171.418
+radius = 53.0377
 
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_fui21")
 
 [node name="sprite" type="Sprite2D" parent="."]
-position = Vector2(530, 316)
-scale = Vector2(3.78646, 3.0599)
+position = Vector2(154, 116)
+scale = Vector2(1.4401, 1.15495)
 texture = ExtResource("1_liy72")
 hframes = 6
 vframes = 8
 frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(525, 319)
+position = Vector2(147, 104)
 shape = SubResource("CapsuleShape2D_fui21")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -296,5 +296,5 @@ libraries = {
 [node name="SwordArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordArea"]
-position = Vector2(544, 288)
+position = Vector2(150, 102)
 shape = SubResource("CircleShape2D_fui21")

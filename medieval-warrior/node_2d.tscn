@@ -6,7 +6,7 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_wtcfe")]
-position = Vector2(28, -52)
+position = Vector2(30, 47)
 
 [node name="Peoes" parent="." groups=["enemies"] instance=ExtResource("2_0e48y")]
 position = Vector2(369, 458)

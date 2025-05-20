@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://crr7lvjcvelph"]
+[gd_scene load_steps=13 format=3 uid="uid://crr7lvjcvelph"]
 
 [ext_resource type="Texture2D" uid="uid://fmvx1ve21i7y" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Red/Pawn_Red.png" id="1_37prt"]
 [ext_resource type="Script" uid="uid://ciurlxwr30267" path="res://inimigos/inimigos.gd" id="1_k7ipy"]
+[ext_resource type="PackedScene" uid="uid://m1ckjjq3y4ao" path="res://misc/caveira.tscn" id="2_nydnx"]
 [ext_resource type="Script" uid="uid://bbgt3c8agf8fg" path="res://inimigos/comportamentos/seguir.gd" id="3_k7ipy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r3xpm"]
@@ -55,22 +56,23 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nydnx"]
-radius = 51.0
-height = 130.0
+radius = 43.0
+height = 124.0
 
 [node name="Peoes" type="CharacterBody2D" groups=["Inimigos"]]
 position = Vector2(57, 21)
 script = ExtResource("1_k7ipy")
+death_prefab = ExtResource("2_nydnx")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(141, 83)
-scale = Vector2(3.10417, 3.03385)
+position = Vector2(36.25, 59.2188)
+scale = Vector2(1.60156, 1.72689)
 sprite_frames = SubResource("SpriteFrames_4bxhc")
 autoplay = "default"
 frame_progress = 0.124535
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(132, 69)
+position = Vector2(35, 64)
 shape = SubResource("CapsuleShape2D_nydnx")
 
 [node name="seguir" type="Node" parent="."]
