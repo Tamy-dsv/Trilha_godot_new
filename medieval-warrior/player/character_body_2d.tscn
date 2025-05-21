@@ -1,11 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://56hvo4kn26ud"]
+[gd_scene load_steps=16 format=3 uid="uid://56hvo4kn26ud"]
 
 [ext_resource type="Script" uid="uid://ldgxq7ttiene" path="res://player/character_body_2d.gd" id="1_fui21"]
 [ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fui21"]
 radius = 37.0
-height = 116.0
+height = 96.0
 
 [sub_resource type="Animation" id="Animation_fui21"]
 length = 0.001
@@ -271,7 +271,10 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fui21"]
-radius = 53.0377
+radius = 159.54
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ylu1k"]
+radius = 55.1725
 
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_fui21")
@@ -296,5 +299,15 @@ libraries = {
 [node name="SwordArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordArea"]
-position = Vector2(150, 102)
+position = Vector2(167, 125)
 shape = SubResource("CircleShape2D_fui21")
+one_way_collision_margin = 2.6
+debug_color = Color(0.682353, 0.501961, 0.0901961, 0.054902)
+
+[node name="Areadedano" type="Area2D" parent="."]
+position = Vector2(1130, 435)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areadedano"]
+position = Vector2(-986, -329)
+shape = SubResource("CircleShape2D_ylu1k")
+debug_color = Color(0.964706, 0.137255, 0.321569, 0.231373)
