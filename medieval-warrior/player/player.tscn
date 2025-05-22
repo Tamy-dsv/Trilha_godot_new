@@ -1,0 +1,503 @@
+[gd_scene load_steps=18 format=3 uid="uid://dv35555e6bb12"]
+
+[ext_resource type="Texture2D" uid="uid://c4jrqj3mppc31" path="res://addons/Tiny Swords/Factions/Knights/Troops/Warrior/Purple/Warrior_Purple.png" id="1_liy72"]
+[ext_resource type="PackedScene" uid="uid://dhrkvvdtpgd27" path="res://misc/big_sckull.tscn" id="1_rkbax"]
+
+[sub_resource type="GDScript" id="GDScript_oul6g"]
+script/source = "extends CharacterBody2D
+
+@export var speed: float = 3
+@export var suword_damage: int = 2
+@export var health: int = 100
+@export var death_prefab: PackedScene
+
+@onready var sprite: Sprite2D = $sprite
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var sword_area: Area2D = $SwordArea
+@onready var hitbox_area: Area2D = $HitboxArea
+ 
+var input_vector: Vector2 = Vector2(0,0)
+var is_running: bool = false 
+var was_running: bool = false 
+var is_attacking: bool = false
+var attack_cooldown: float = 0.0
+var hitbox_cooldown: float = 0.0
+
+
+func _process(delta: float)-> void:
+	GameManager.player_position = position
+	
+	# ler input 
+	read_input()
+	
+	#processar atack
+	udpdate_attack_cooldown(delta)
+	if Input.is_action_just_pressed(\"ataque\"):
+		attack()
+			
+	#processar animação e rotação do sprite
+	play_run_idle_animation()
+	if not is_attacking:
+		rotate_sprite()	
+		
+	# processa dano
+	update_hitbox_detection(delta)	
+		
+func _physics_process(delta: float) -> void:
+
+	#var target_velocity = input_vector * speed * 100.0
+	#if is_attacking:
+		#target_velocity *= 0.25
+	#velocity = lerp(velocity, target_velocity, 0.05)
+	#move_and_slide()
+	
+	var target_velocity = input_vector * speed * 100.0
+	if is_attacking:
+		target_velocity *= 0.25
+
+	if input_vector.is_zero_approx():
+		velocity = Vector2.ZERO
+	else:
+		velocity = lerp(velocity, target_velocity, 0.05)
+
+	move_and_slide()
+
+func udpdate_attack_cooldown(delta: float) -> void:
+	#Atualizar temporizador de ataque 
+	if is_attacking:
+		attack_cooldown -= delta
+		if attack_cooldown <= 0.0:
+			is_attacking = false
+			is_running = false
+			animation_player.play(\"idle\")
+	
+func read_input() -> void:
+	#obter o input vector 
+	input_vector = Input.get_vector(\"mover_esquerda\", \"mover_direita\", \"mover_cima\", \"mover_baixo\" )
+		#close deadzone
+	var deadzone = 0.15
+	if abs(input_vector.x) < 0.15:
+		input_vector.x = 0.0
+		
+	if abs(input_vector.y) < 0.15:
+		input_vector.y = 0.0	
+		
+		
+	# Atualiza o estado de is_running
+	was_running = is_running 
+	is_running = not input_vector.is_zero_approx()	
+		
+func play_run_idle_animation() -> void:
+	# Rodar a animação
+	if not is_attacking:
+		if was_running != is_running:
+			if is_running:
+				animation_player.play(\"run\")
+			else:
+				animation_player.play(\"idle\")		
+			
+func rotate_sprite() -> void:
+		# Girar o sprite 	
+	if input_vector.x > 0:
+		sprite.flip_h = false
+	elif input_vector.x < 0:		
+		sprite.flip_h = true			
+	
+func attack() -> void:
+	if is_attacking:
+		return
+	#Tocar animação
+	animation_player.play( \"ataque_cima-baixo\")
+	
+	#confirmar temporizazador 		
+	attack_cooldown = 0.6
+	
+	#marcar ataque
+	is_attacking = true	
+
+
+
+func deal_damage_to_enemies() -> void:
+	var bodies = sword_area.get_overlapping_bodies()
+	for body in bodies:
+		if body.is_in_group(\"enemyes\"):
+			var enemy: Enemy = body
+			var direction_to_enemy = (enemy.position - position).normalized()
+			var attack_direction: Vector2
+			if sprite.flip_h:
+				attack_direction = Vector2.LEFT
+			else:
+				attack_direction = Vector2.RIGHT 
+			var dot_product  = direction_to_enemy.dot(attack_direction)		
+			if dot_product >= 0.3:	
+				enemy.damage(suword_damage)
+				
+func update_hitbox_detection(delta: float) -> void:
+	#Tempo para não receber dados 
+	hitbox_cooldown -= delta 
+	if hitbox_cooldown > 0: return
+	
+	#Frequência
+	hitbox_cooldown = 0.5
+
+	#detectar inimigos
+	var bodies = hitbox_area.get_overlapping_bodies()
+	for body in bodies:
+		if body.is_in_group(\"enemyes\"):
+			var enemy: Enemy = body
+			var damage_amount = 1
+			damage(damage_amount)
+							
+func damage(amount: int) -> void:
+	if health <=0: return
+	
+	health -= amount
+	print(\"Player atingido\", amount, \". Avida total é\", health )
+	
+	#Receber dano
+	modulate = Color.RED
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN)
+	tween.set_trans(Tween.TRANS_QUINT)
+	tween.tween_property(self, \"modulate\", Color.WHITE, 0.3)
+	
+	# transição de inimigo morto
+	if health <= 0:
+		die()
+		
+func die() -> void:
+	if death_prefab:
+		var death_object = death_prefab.instantiate()
+		death_object.position = position
+		get_parent().add_child(death_object)
+		print(\"Player morreu\")	
+		queue_free()					
+			
+			
+		
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oul6g"]
+radius = 18.0
+height = 60.0
+
+[sub_resource type="Animation" id="Animation_g1dw6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+
+[sub_resource type="Animation" id="Animation_g6k8r"]
+resource_name = "ataque_baixo-cima"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21, 22, 23, 25]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_oul6g"]
+resource_name = "ataque_cima-baixo"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.3001, 0.3002, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 14, 14, 16, 17]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_hg6s5"]
+resource_name = "ataque_costa-direita"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [36, 37, 38, 39, 40, 41, 42]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_8t03j"]
+resource_name = "ataque_costa-esquerda"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [42, 43, 44, 45, 46, 47, 47]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rgyib"]
+resource_name = "ataque_direita-esquerda"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [30, 31, 32, 33, 34, 35, 36]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_boad6"]
+resource_name = "ataque_esquerda-direita"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 26, 27, 28, 29]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"deal_damage_to_enemies"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rkbax"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_yw30f"]
+resource_name = "new_animation"
+step = 0.0
+
+[sub_resource type="Animation" id="Animation_qjkh3"]
+resource_name = "run"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11, 12]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g6k8r"]
+_data = {
+&"RESET": SubResource("Animation_g1dw6"),
+&"ataque_baixo-cima": SubResource("Animation_g6k8r"),
+&"ataque_cima-baixo": SubResource("Animation_oul6g"),
+&"ataque_costa-direita": SubResource("Animation_hg6s5"),
+&"ataque_costa-esquerda": SubResource("Animation_8t03j"),
+&"ataque_direita-esquerda": SubResource("Animation_rgyib"),
+&"ataque_esquerda-direita": SubResource("Animation_boad6"),
+&"idle": SubResource("Animation_rkbax"),
+&"new_animation": SubResource("Animation_yw30f"),
+&"run": SubResource("Animation_qjkh3")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oul6g"]
+radius = 141.004
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rkbax"]
+radius = 43.0116
+
+[node name="player" type="CharacterBody2D"]
+position = Vector2(120, 117)
+motion_mode = 1
+script = SubResource("GDScript_oul6g")
+death_prefab = ExtResource("1_rkbax")
+
+[node name="sprite" type="Sprite2D" parent="."]
+position = Vector2(-2, -28)
+scale = Vector2(0.983978, 1)
+texture = ExtResource("1_liy72")
+hframes = 6
+vframes = 8
+frame = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -27)
+shape = SubResource("CapsuleShape2D_oul6g")
+debug_color = Color(0, 0.6, 0.701961, 0.0745098)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_g6k8r")
+}
+
+[node name="SwordArea" type="Area2D" parent="."]
+position = Vector2(0, -27)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordArea"]
+position = Vector2(4, 7)
+shape = SubResource("CircleShape2D_oul6g")
+debug_color = Color(0.643137, 0.521569, 0.164706, 0)
+
+[node name="HitboxArea" type="Area2D" parent="."]
+position = Vector2(-1, -36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_rkbax")
+debug_color = Color(0.960784, 0.12549, 0.396078, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
