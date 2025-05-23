@@ -25,6 +25,9 @@ func die() -> void:
 		death_object.position = position
 		get_parent().add_child(death_object)
 			
-	queue_free()		
+	queue_free()
+	
+
+		
 		
 		

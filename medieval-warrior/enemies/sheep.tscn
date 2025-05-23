@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bxwdxw43eov6c" path="res://enemies/enemy.gd" id="1_4ya3h"]
 [ext_resource type="PackedScene" uid="uid://drlp7cheupsp3" path="res://life/meat.tscn" id="2_qa1ig"]
 [ext_resource type="Script" uid="uid://jdtpfpdne5vk" path="res://enemies/behavior/follow.gd" id="4_rxsba"]
-[ext_resource type="Texture2D" uid="uid://d2x0kicdu8oxh" path="res://addons/Tiny Swords/Resources/Sheep/HappySheep_Bouncing.png" id="5_aam4p"]
+[ext_resource type="Texture2D" uid="uid://d2x0kicdu8oxh" path="res://addons/Tiny Swords/Tiny Swords (Update 010)/Resources/Sheep/HappySheep_Bouncing.png" id="5_aam4p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qa1ig"]
 atlas = ExtResource("5_aam4p")
